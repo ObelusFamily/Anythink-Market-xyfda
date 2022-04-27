@@ -1,3 +1,4 @@
+require("dotenv").config();
 var mongoose = require("mongoose");
 require("./models/User")
 require("./models/Item")
@@ -6,7 +7,8 @@ var User = mongoose.model("User");
 var Item = mongoose.model("Item");
 var Comment = mongoose.model("Comment");
 
-mongoose.connect('mongodb://127.0.0.1:27017/wilco');
+// mongoose.connect('mongodb://127.0.0.1:27017/wilco');
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.set("debug", true);
 
 const getUsers = async () => {
@@ -120,4 +122,4 @@ const addItems = async () => {
 }
 
 
-addItems();
+addItems().then(() => mongoose.connection.close());
